@@ -24,7 +24,7 @@ public class AlertRabbit {
             scheduler.start();
             JobDetail job = newJob(Rabbit.class).build();
             SimpleScheduleBuilder times = simpleSchedule()
-                    .withIntervalInSeconds(Integer.parseInt(readProperties()))
+                    .withIntervalInSeconds(Integer.parseInt(readProperties().getProperty("rabbit.interval")))
                     .repeatForever();
             Trigger trigger = newTrigger()
                     .startNow()
@@ -36,27 +36,12 @@ public class AlertRabbit {
         }
     }
 
-    public static String readProperties() throws Exception {
+    public static Properties readProperties() throws Exception {
         Properties properties = new Properties();
         try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
             properties.load(in);
         }
-        return splitAndAdd(String.valueOf(properties));
-    }
-
-    public static String splitAndAdd(String line) {
-        String[] lines = line.split("=");
-        if (lines.length != 2) {
-            throw new IllegalArgumentException("Wrong num of args!");
-        }
-        if (lines[0].isBlank() || lines[1].isBlank()) {
-            throw new IllegalArgumentException("Argument can`t be blank!");
-        }
-        String value = lines[1];
-        if (value.endsWith("}")) {
-            value = value.replace("}", "");
-        }
-        return value;
+        return properties;
     }
 
     public static class Rabbit implements Job {
