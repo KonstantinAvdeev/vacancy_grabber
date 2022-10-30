@@ -59,8 +59,8 @@ public class Post {
             return false;
         }
         Post post = (Post) o;
-        return Objects.equals(title, post.title) &&
-                Objects.equals(description, post.description);
+        return Objects.equals(title, post.title)
+                && Objects.equals(description, post.description);
     }
 
     @Override
