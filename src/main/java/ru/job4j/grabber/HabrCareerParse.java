@@ -26,23 +26,33 @@ public class HabrCareerParse implements Parse {
         this.dateTimeParser = dateTimeParser;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         HabrCareerParse habrCareerParse = new HabrCareerParse(new HabrCareerDateTimeParser());
         System.out.println(habrCareerParse.list(PAGE_LINK + "?page="));
     }
 
-    private static String retrieveDescription(String link) throws IOException {
-        Document document = Jsoup.connect(link).get();
+    private static String retrieveDescription(String link) {
+        Document document;
+        try {
+            document = Jsoup.connect(link).get();
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Something wrong with open " + link);
+        }
         Elements row = document.select(".style-ugc");
         return row.text();
     }
 
     @Override
-    public List<Post> list(String link) throws IOException {
+    public List<Post> list(String link) {
         List<Post> postList = new ArrayList<>();
         for (int i = 1; i <= PAGES; i++) {
             Connection connection = Jsoup.connect(link + i);
-            Document document = connection.get();
+            Document document;
+            try {
+                document = connection.get();
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Something wrong with reading " + link + i + "information!");
+            }
             Elements rows = document.select(".vacancy-card__inner");
             for (Element row : rows) {
                 postList.add(parsePost(row));
@@ -51,7 +61,7 @@ public class HabrCareerParse implements Parse {
         return postList;
     }
 
-    private Post parsePost(Element element) throws IOException {
+    private Post parsePost(Element element) {
         Element titleElement = element.select(".vacancy-card__title").first();
         Element linkElement = titleElement.child(0);
         String vacancyName = titleElement.text();
@@ -59,12 +69,7 @@ public class HabrCareerParse implements Parse {
         Element dateElement = element.select(".vacancy-card__date").first();
         Element dateTime = dateElement.child(0);
         String date = dateTime.attr("datetime");
-        String desc = "";
-        try {
-            desc = retrieveDescription(linkString);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
+        String desc = retrieveDescription(linkString);
         return new Post(vacancyName, linkString, desc, this.dateTimeParser.parse(date));
     }
 
