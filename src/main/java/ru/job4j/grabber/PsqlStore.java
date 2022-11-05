@@ -1,5 +1,9 @@
 package ru.job4j.grabber;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,6 +19,7 @@ import java.util.Properties;
 
 public class PsqlStore implements Store, AutoCloseable {
 
+    private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class.getName());
     private Connection cnn;
 
     public PsqlStore(Properties cfg) {
@@ -25,7 +30,7 @@ public class PsqlStore implements Store, AutoCloseable {
                     cfg.getProperty("username"),
                     cfg.getProperty("password"));
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            LOG.error("Something wrong while creating constructor!", e);
         }
     }
 
@@ -58,16 +63,17 @@ public class PsqlStore implements Store, AutoCloseable {
 
             }
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            LOG.error("Something wrong while main method using!", e);
         }
 
     }
 
     @Override
     public void save(Post post) {
-        try (PreparedStatement preparedStatement = cnn.prepareStatement("insert into post(name, link, text, created) "
-                        + "values(?, ?, ?, ?);",
-                Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement preparedStatement =
+                     cnn.prepareStatement("insert into post(name, link, text, created) "
+                                     + "values(?, ?, ?, ?) on conflict (link) do nothing;",
+                             Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, post.getTitle());
             preparedStatement.setString(2, post.getLink());
             preparedStatement.setString(3, post.getDescription());
@@ -79,7 +85,7 @@ public class PsqlStore implements Store, AutoCloseable {
                 }
             }
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            LOG.error("Something wrong while saving data to the table!", e);
         }
     }
 
@@ -93,7 +99,7 @@ public class PsqlStore implements Store, AutoCloseable {
                 }
             }
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            LOG.error("Something wrong while taking data from table!", e);
         }
         return list;
     }
@@ -110,7 +116,7 @@ public class PsqlStore implements Store, AutoCloseable {
                 }
             }
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            LOG.error("Something wrong while find data in table!", e);
         }
         return post;
     }
