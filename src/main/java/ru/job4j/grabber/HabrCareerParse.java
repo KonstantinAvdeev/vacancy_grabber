@@ -51,7 +51,7 @@ public class HabrCareerParse implements Parse {
             try {
                 document = connection.get();
             } catch (IOException e) {
-                throw new IllegalArgumentException("Something wrong with reading " + link + i + "information!");
+                throw new IllegalArgumentException("Something wrong with reading information and make list of Posts!");
             }
             Elements rows = document.select(".vacancy-card__inner");
             for (Element row : rows) {

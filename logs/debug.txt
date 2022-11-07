@@ -1,0 +1,10 @@
+2022-11-07 20:33:22,361 DEBUG org.quartz.core.QuartzSchedulerThread:run:291 - batch acquisition of 1 triggers
+2022-11-07 20:33:30,746 DEBUG org.quartz.simpl.PropertySettingJobFactory:newJob:51 - Producing instance of Job 'DEFAULT.6da64b5bd2ee-e8c41765-b640-43ec-8dcf-343bf1c6f79d', class=ru.job4j.grabber.Grabber$GrabJob
+2022-11-07 20:33:30,747 DEBUG org.quartz.core.QuartzSchedulerThread:run:291 - batch acquisition of 0 triggers
+2022-11-07 20:33:30,747 DEBUG org.quartz.core.JobRunShell:run:201 - Calling execute on job DEFAULT.6da64b5bd2ee-e8c41765-b640-43ec-8dcf-343bf1c6f79d
+2022-11-07 20:33:56,436 DEBUG org.quartz.core.QuartzSchedulerThread:run:291 - batch acquisition of 0 triggers
+2022-11-07 20:34:22,164 DEBUG org.quartz.core.QuartzSchedulerThread:run:291 - batch acquisition of 1 triggers
+2022-11-07 20:34:30,746 DEBUG org.quartz.simpl.PropertySettingJobFactory:newJob:51 - Producing instance of Job 'DEFAULT.6da64b5bd2ee-e8c41765-b640-43ec-8dcf-343bf1c6f79d', class=ru.job4j.grabber.Grabber$GrabJob
+2022-11-07 20:34:30,747 DEBUG org.quartz.core.QuartzSchedulerThread:run:291 - batch acquisition of 0 triggers
+2022-11-07 20:34:30,747 DEBUG org.quartz.core.JobRunShell:run:201 - Calling execute on job DEFAULT.6da64b5bd2ee-e8c41765-b640-43ec-8dcf-343bf1c6f79d
+2022-11-07 20:34:57,293 DEBUG org.quartz.core.QuartzSchedulerThread:run:291 - batch acquisition of 0 triggers
